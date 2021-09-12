@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.inc": "cpp",
+    "functional": "cpp"
+  },
+  "editor.codeActionsOnSave": {}
+}
