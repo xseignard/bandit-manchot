@@ -3,7 +3,7 @@
 #include "etherscan.h"
 #include "wifiUtils.h"
 #include "ui.h"
-#include "audio.h"
+#include "coin.h"
 
 // how many addresses do we pick for a coin
 #define PICK_COUNT 5
@@ -19,27 +19,39 @@ char balance[64]; // TODO: max size of balance ??
 
 // handle state transitions
 enum class State {
+  Init, // init state, only used for prev state
   Idle, // waiting for a coin
-  Picking, // coin inserted start picking priv/pub/address
+  Arm, // waiting for the arm to be pulled
+  Picking, // arm pulled, start picking priv/pub/address
   Picked, // priv/pub/address picked
   Win
 };
 State state = State::Idle;
+State prevState = State::Init;
 
-
+void updateState(State newState) {
+  prevState = state;
+  state = newState;
+}
 
 void setup() {
+  pinMode(GPIO_NUM_15, OUTPUT);
+  digitalWrite(GPIO_NUM_15, LOW);
   Serial.begin(115200);
   startWifi();
   initKeys();
   initUI();
-  initAudio();
+  initCoin();
 }
 
 void loop() {
   switch (state) {
     case State::Idle:
       handleIdle();
+      break;
+    
+    case State::Arm:
+      handleArm();
       break;
 
     case State::Picking:
@@ -55,8 +67,8 @@ void loop() {
       break;
 
     default:
-      Serial.println("UHO, shouldn't be there...");
-      state = State::Idle;
+      Serial.println("UHO, you shouldn't be there...");
+      updateState(State::Idle);
       break;
   }
 }
@@ -70,12 +82,22 @@ void handleIdle() {
     resetUI();
   }
   // wait for a coin
-  play(Track::Mario);
-  printIdle();
-  delay(10000);
-  resetUI();
-  play(Track::None);
-  state = State::Picking;
+  if (prevState != State::Idle) {
+    updateState(State::Idle);
+    printIdle();
+  }
+  if (hasCoin()) {
+    digitalWrite(GPIO_NUM_15, HIGH);
+    updateState(State::Arm);
+    resetCoin();
+  }
+}
+
+void handleArm() {
+  printArm();
+  // TODO handle arm
+  delay(5000);
+  updateState(State::Picking);
 }
 
 void handlePicking() {
@@ -85,16 +107,16 @@ void handlePicking() {
   count++;
   delay(1000);
 
-  if (balance != "0") state = State::Win;
-  else state = State::Picked;
+  if (balance != "0") updateState(State::Win);
+  else updateState(State::Picked);
 }
 
 void handlePicked() {
-  if (count < PICK_COUNT) state = State::Picking;
-  else state = State::Idle;
+  if (count < PICK_COUNT) updateState(State::Picking);
+  else updateState(State::Idle);
 }
 
 void handleWin() {
   delay(5000);
-  state = State::Idle;
+  updateState(State::Idle);
 }
