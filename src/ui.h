@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <fabgl.h>
 
 fabgl::VGA16Controller DisplayController;
@@ -9,6 +8,9 @@ int rows;
 int columns;
 
 const char idleHeader[] = "WAITING FOR A COIN...";
+const char armHeader[] = "PULL THE ARM...";
+const char loseHeader[] = "YOU LOSE...";
+const char winHeader[] = "YOU WIN! TIME TO TAKE A PICTURE ;)";
 
 const char privateKeyHeader[] = "PRIVATE KEY: ";
 const char publicKeyHeader[] = "PUBLIC KEY: ";
@@ -71,6 +73,24 @@ void printIdle() {
   int size = sizeof(idleHeader) / 2;
   Controller.setCursorPos(columns / 2 - size, rows/2);
   slowPrintf(idleHeader);
+}
+
+void printArm() {
+  int size = sizeof(armHeader) / 2;
+  Controller.setCursorPos(columns / 2 - size, rows/2);
+  slowPrintf(armHeader);
+}
+
+void printLose() {
+  int size = sizeof(loseHeader) / 2;
+  Controller.setCursorPos(columns / 2 - size, rows/2);
+  slowPrintf(loseHeader);
+}
+
+void printWin() {
+  int size = sizeof(winHeader) / 2;
+  Controller.setCursorPos(columns / 2 - size, rows/2);
+  slowPrintf(winHeader);
 }
 
 void printPick(char* privateKey, char* publicKey, char* address, char* balance) {

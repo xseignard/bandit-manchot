@@ -1,36 +1,19 @@
 #include <Arduino.h>
-#include <fabgl.h>
+#include <Somo2.h>
 
-#include "sounds/mario.h"
-
-SoundGenerator soundGenerator;
-// init all sounds here
-SamplesGenerator mario = SamplesGenerator(marioSamples, sizeof(marioSamples));
-
-enum class Track {
-  Mario,
-  None,
-};
-Track track = Track::None;
+Somo2 somo = Somo2();
 
 void initAudio() {
-  soundGenerator.setVolume(127);
-  // attach all sounds here
-  soundGenerator.attach(&mario);
+  somo.begin();
+  somo.reset();
+  delay(1000);
+  somo.setVolume(30);
 }
 
-void play(Track track) {
-  switch (track) {
-    case Track::Mario:
-      mario.enable(true);
-      // TODO: disable others
-      soundGenerator.play(true);
-      break;
-    case Track::None:
-    default:
-      // TODO: disable all
-      mario.enable(false);
-      soundGenerator.play(false);
-      break;
-  }
+void playAudio() {
+  somo.playTrack(1, 1);
+}
+
+void stopAudio() {
+  somo.stop();
 }

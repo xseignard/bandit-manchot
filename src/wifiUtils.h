@@ -14,11 +14,8 @@ void startWifi() {
   wifiReset(WIFI_STA);
   while (WiFi.status() != WL_CONNECTED) {
     wifiReset(WIFI_STA);
-    Serial.print(".");
+    blink(1, 1000);
     WiFi.begin(ssid, password);
   }
-  Serial.println();
-  Serial.print("WiFi connected with IP: ");
-  Serial.println(WiFi.localIP());
   delay(1000);
 }
