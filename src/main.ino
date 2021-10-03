@@ -88,8 +88,9 @@ void handleIdle() {
   if (prevState != State::Idle) {
     updateState(State::Idle);
     resetCoin();
-    stopAudio();
     printIdle();
+    stopAudio();
+    playIdle();
   }
   if (hasCoin()) {
     updateState(State::Arm);
@@ -101,9 +102,11 @@ void handleArm() {
   if (prevState != State::Arm) {
     updateState(State::Arm);
     printArm();
-    playAudio();
   }
-  if (isArmPulled()) updateState(State::Picking);
+  if (isArmPulled()) {
+    playPicking();
+    updateState(State::Picking);
+  }
 }
 
 void handlePicking() {
@@ -132,6 +135,7 @@ void handleLose() {
   if (prevState != State::Lose) {
     updateState(State::Lose);
     printLose();
+    playLose();
   }
   delay(10000);
   updateState(State::Idle);
@@ -140,6 +144,7 @@ void handleLose() {
 void handleWin() {
   if (prevState != State::Win) {
     updateState(State::Win);
+    playWin();
     printWin();
   }
   delay(10000);
