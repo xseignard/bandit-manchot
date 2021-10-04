@@ -2,7 +2,8 @@
   "files.associations": {
     "*.inc": "cpp",
     "functional": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "string": "cpp"
   },
   "editor.codeActionsOnSave": {}
 }

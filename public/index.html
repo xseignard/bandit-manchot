@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="<%= BASE_URL %>favicon-16x16.png"
+    />
+    <title>One arm crypto bandit</title>
+    <style>
+      @font-face {
+        font-family: 'Material Design Icons';
+        src: url('/fonts/MaterialIcons.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      .mdi:before,
+      .mdi-set {
+        display: inline-block;
+        font: normal normal normal 24px/1 'Material Design Icons';
+        font-size: inherit;
+        text-rendering: auto;
+        line-height: inherit;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .mdi-24px.mdi-set,
+      .mdi-24px.mdi:before {
+        font-size: 24px;
+      }
+      .mdi-minus::before {
+        content: '\F0374';
+      }
+      .mdi-plus::before {
+        content: '\F0415';
+      }
+      .mdi-eye::before {
+        content: '\F0208';
+      }
+      .mdi-eye-off::before {
+        content: '\F0209';
+      }
+      .mdi-wifi::before {
+        content: '\F05A9';
+      }
+      .mdi-key::before {
+        content: '\F0306';
+      }
+      .mdi-pencil::before {
+        content: '\F03EB';
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>
+      <strong>
+        We're sorry but wifi-artnet doesn't work properly without JavaScript
+        enabled. Please enable it to continue.
+      </strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
