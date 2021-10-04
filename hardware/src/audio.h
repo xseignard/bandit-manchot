@@ -1,33 +1,40 @@
 #include <Arduino.h>
-#include <Somo2.h>
+#include <HardwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 
-Somo2 somo = Somo2();
+#define RX_PIN 16
+#define TX_PIN 17
+
+HardwareSerial audioBus(1);
+DFRobotDFPlayerMini player;
 
 void initAudio() {
   randomSeed(analogRead(GPIO_NUM_13));
-  somo.begin();
-  somo.reset();
+  audioBus.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);
   delay(1000);
-  somo.setVolume(30);
+  player.begin(audioBus);
+  player.reset();
+  delay(1000);
+  player.volume(30);
 }
 
 void playIdle() {
-  somo.playTrack(1, 1);
+  player.playFolder(1, 1);
 }
 
 void playPicking() {
-  somo.playTrack(2, 1);
+  player.playFolder(2, 1);
 }
 
 void playWin() {
-  somo.playTrack(4, 1);
+  player.playFolder(4, 1);
 }
 
 void playLose() {
-  somo.playTrack(3, random(1, 23));
+  player.playFolder(3, random(1, 23));
 }
 
 void stopAudio() {
-  somo.stop();
+  player.stop();
   delay(300);
 }
