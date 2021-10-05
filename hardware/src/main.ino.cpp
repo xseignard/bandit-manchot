@@ -1,3 +1,6 @@
+# 1 "/var/folders/l0/n6_pmns12kx3653h57b65f800000gn/T/tmpiutnd5d8"
+#include <Arduino.h>
+# 1 "/Users/xavier.seignard/repos/bandit-manchot/hardware/src/main.ino"
 #include <Arduino.h>
 #include <Wifi.h>
 #include "blink.h"
@@ -12,27 +15,27 @@
 
 bool helpDisplayed = false;
 
-// how many addresses do we pick for a coin
+
 #define PICK_COUNT 4
 int8_t count = 0;
 
-// keep track of data
+
 #define PRIVATE_KEY_LENGTH 66
 #define PUBLIC_KEY_LENGTH 132
 #define ADDRESS_LENGTH 42
 char privateKey[PRIVATE_KEY_LENGTH + 1];
 char publicKey[PUBLIC_KEY_LENGTH + 1];
 char address[ADDRESS_LENGTH + 1];
-char balance[256]; // TODO: max size of balance ??
+char balance[256];
 bool bingo;
 
-// handle state transitions
+
 enum class State {
-  Init, // init state, only used for prev state
-  Idle, // waiting for a coin
-  Arm, // waiting for the arm to be pulled
-  Picking, // arm pulled, start picking priv/pub/address
-  Picked, // priv/pub/address picked
+  Init,
+  Idle,
+  Arm,
+  Picking,
+  Picked,
   Lose,
   Win
 };
@@ -44,7 +47,15 @@ void updateState(State newState, bool reset = true) {
   prevState = state;
   state = newState;
 }
-
+void setup();
+void loop();
+void handleIdle();
+void handleArm();
+void handlePicking();
+void handlePicked();
+void handleLose();
+void handleWin();
+#line 48 "/Users/xavier.seignard/repos/bandit-manchot/hardware/src/main.ino"
 void setup() {
   readNVS();
   delay(1000);
@@ -64,7 +75,7 @@ void loop() {
       case State::Idle:
         handleIdle();
         break;
-      
+
       case State::Arm:
         handleArm();
         break;
@@ -100,7 +111,7 @@ void loop() {
 
 
 void handleIdle() {
-  // wait for a coin
+
   if (prevState != State::Idle) {
     updateState(State::Idle);
     resetCoin();
@@ -125,7 +136,7 @@ void handleArm() {
 void handlePicking() {
   playPicking();
   bool error = getAccount(privateKey, publicKey, address, balance, &bingo);
-  // call failed, retry pulling the arm
+
   if (error) updateState(State::Arm);
   else {
     printPick(privateKey, publicKey, address, balance, count == 0);

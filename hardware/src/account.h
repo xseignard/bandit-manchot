@@ -30,6 +30,7 @@ bool getAccount(char* privateKey, char* publicKey, char* address, char* balance,
     strcpy(publicKey, doc["publicKey"].as<const char*>());
     strcpy(address, doc["address"].as<const char*>());
     strcpy(balance, doc["balance"].as<const char*>());
+    strcat(balance, " ETH");
     *bingo = doc["bingo"].as<bool>();
     return false;
   }

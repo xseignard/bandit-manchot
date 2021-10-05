@@ -211,7 +211,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=50101",
+                "PLATFORMIO=50200",
                 "ARDUINO_ESP32_DEV",
                 "VGA_R1=GPIO_NUM_23",
                 "VGA_R0=GPIO_NUM_19",

@@ -81,18 +81,6 @@ void printArm() {
   slowPrintf(armHeader);
 }
 
-void printLose() {
-  int size = sizeof(loseHeader) / 2;
-  Controller.setCursorPos(columns / 2 - size, rows/2);
-  slowPrintf(loseHeader);
-}
-
-void printWin() {
-  int size = sizeof(winHeader) / 2;
-  Controller.setCursorPos(columns / 2 - size, rows/2);
-  slowPrintf(winHeader);
-}
-
 void printPick(char* privateKey, char* publicKey, char* address, char* balance, bool first) {
   if (first) {
     Terminal.write("\r\n");
@@ -127,6 +115,19 @@ void printPick(char* privateKey, char* publicKey, char* address, char* balance, 
   slowPrintf(balanceHeader);
   // green color
   Terminal.write("\e[32m");
-  slowPrintf(strcat(balance, " ETH"));
+  slowPrintf(balance);
   Terminal.write("\r\n\r\n");
+}
+
+void printLose() {
+  int size = sizeof(loseHeader) / 2;
+  Controller.setCursorPos(columns / 2 - size, rows/2);
+  slowPrintf(loseHeader);
+}
+
+void printWin(char* privateKey, char* publicKey, char* address, char* balance) {
+  int size = sizeof(winHeader) / 2;
+  Controller.setCursorPos(columns / 2 - size, rows / 3);
+  slowPrintf(winHeader);// red color
+  printPick(privateKey, publicKey, address, balance, true);
 }
